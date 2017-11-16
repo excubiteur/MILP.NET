@@ -63,6 +63,13 @@ namespace MILP.NET
             return result;
         }
 
+        public Param2 CreateParam(Set index1, Set index2)
+        {
+            var result = new Param2(index1, index2);
+            _params.Add(result);
+            return result;
+        }
+
         public Var1 CreateVar(Set index)
         {
             var result = new Var1(index);

@@ -4,6 +4,27 @@ using System.Collections.Generic;
 using MILP.NET;
 using static MILP.NET.Model;
 
+// AMPL model to translate
+// From the book: "AMPL: A Modeling Language for Mathematical Programming" 
+// http://ampl.com/resources/the-ampl-book/
+// prod.mod (Chapter 1)
+/*
+set P;
+
+param a {j in P};
+param b;
+param c {j in P};
+param u {j in P};
+
+var X {j in P};
+
+maximize Total_Profit: sum {j in P} c[j] * X[j];
+
+subject to Time: sum {j in P} (1/a[j]) * X[j] <= b;
+
+subject to Limit {j in P}: 0 <= X[j] <= u[j];
+*/
+
 namespace Examples
 {
     class Prod
