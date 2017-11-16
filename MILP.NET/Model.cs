@@ -15,6 +15,28 @@ namespace MILP.NET
         internal bool _maximize;
 
         internal int NumberOfVariables { get; private set; }
+        
+        Var GetVar(int absoluteIndex)
+        {
+            int cumulativeSize = 0;
+            foreach(var v in _vars)
+            {
+                cumulativeSize += v.Count;
+                if (absoluteIndex < cumulativeSize)
+                    return v;
+            }
+            throw new IndexOutOfRangeException();
+        }
+
+        internal double? GetLowerBound(int absoluteIndex)
+        {
+            return GetVar(absoluteIndex).GetLowerBound(absoluteIndex);
+        }
+
+        internal double? GetUpperBound(int absoluteIndex)
+        {
+            return GetVar(absoluteIndex).GetUpperBound(absoluteIndex);
+        }
 
         public void SealData()
         {

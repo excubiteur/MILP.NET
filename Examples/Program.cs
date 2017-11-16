@@ -8,6 +8,7 @@ namespace Examples
         static void Main(string[] args)
         {
             Prod.Run();
+            Steel.Run();
         }
     }
 }

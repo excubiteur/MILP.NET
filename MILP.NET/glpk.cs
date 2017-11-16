@@ -97,7 +97,24 @@ namespace MILP.NET
             for(int i = 1; i <= ncols; ++i)
             {
                 glp_set_col_kind(_lp, i, GLP_CV);
-                glp_set_col_bnds(_lp, i, GLP_FR, 0, 0);
+                var lower = _model.GetLowerBound(i - 1);
+                var upper = _model.GetUpperBound(i - 1);
+                if (lower.HasValue && upper.HasValue)
+                {
+                    glp_set_col_bnds(_lp, i, GLP_DB, lower.Value, upper.Value);
+                }
+                else if (lower.HasValue)
+                {
+                    glp_set_col_bnds(_lp, i, GLP_LO, lower.Value, 0);
+                }
+                else if (upper.HasValue)
+                {
+                    glp_set_col_bnds(_lp, i, GLP_UP, 0, upper.Value);
+                }
+                else
+                {
+                    glp_set_col_bnds(_lp, i, GLP_FR, 0, 0);
+                }
 
             }
 

@@ -21,6 +21,12 @@ namespace MILP.NET
         [DllImport(lp_solve_libname)]
         static extern byte set_unbounded(IntPtr lp, int column);
 
+        [DllImport(lp_solve_libname)]
+        static extern byte set_bounds(IntPtr lp, int column, double lower, double upper);
+
+        [DllImport(lp_solve_libname)]
+        static extern double get_infinite(IntPtr lp);
+
         const int LE = 1;
         const int GE = 2;
         [DllImport(lp_solve_libname)]
@@ -71,7 +77,24 @@ namespace MILP.NET
 
             for (int i = 1; i <= ncols; ++i)
             {
-                set_unbounded(_lp, i);
+                var lower = _model.GetLowerBound(i - 1);
+                var upper = _model.GetUpperBound(i - 1);
+                if (lower.HasValue && upper.HasValue)
+                {
+                    set_bounds(_lp, i, lower.Value, upper.Value);
+                }
+                else if (lower.HasValue)
+                {
+                    set_bounds(_lp, i, lower.Value, get_infinite(_lp));
+                }
+                else if (upper.HasValue)
+                {
+                    set_bounds(_lp, i, -get_infinite(_lp), upper.Value);
+                }
+                else
+                {
+                    set_unbounded(_lp, i);
+                }
             }
 
             foreach (var c in _model._constraints)
