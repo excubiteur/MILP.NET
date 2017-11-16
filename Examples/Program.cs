@@ -9,6 +9,7 @@ namespace Examples
         {
             Prod.Run();
             Steel.Run();
+            Steel3.Run();
         }
     }
 }

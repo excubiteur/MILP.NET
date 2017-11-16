@@ -34,6 +34,12 @@ namespace MILP.NET
             return this;
         }
 
+        public Var1 LowerBound(Func<Index, double> expression)
+        {
+            _lowerBound = expression;
+            return this;
+        }
+
         public Var1 UpperBound(Func<Index, double> expression)
         {
             _upperBound = expression;
