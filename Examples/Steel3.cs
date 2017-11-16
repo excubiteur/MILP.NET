@@ -60,6 +60,7 @@ namespace Examples
             {
                 solver.solve();
                 Console.WriteLine("objective = " + solver.ObjectiveValue.ToString());
+                System.Diagnostics.Debug.Assert((long)(solver.ObjectiveValue * 10000 + 0.5) == 1948285714);
                 solver.GetValues(Make, (name, value) => {
                     Console.WriteLine(name + " = " + value.ToString());
                 });
@@ -69,6 +70,7 @@ namespace Examples
             {
                 solver.solve();
                 Console.WriteLine("objective = " + solver.ObjectiveValue.ToString());
+                System.Diagnostics.Debug.Assert((long)(solver.ObjectiveValue * 10000 + 0.5) == 1948285714);
                 solver.GetValues(Make, (name, value) => {
                     Console.WriteLine(name + " = " + value.ToString());
                 });
