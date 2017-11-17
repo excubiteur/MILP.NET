@@ -30,7 +30,7 @@ namespace MILP.NET
 
         }
 
-        public Param1 Add(IList<double> vals)
+        public Param1 Data(IList<double> vals)
         {
             if (vals.Count != _index.Count)
                 throw new IndexOutOfRangeException();
@@ -70,7 +70,7 @@ namespace MILP.NET
 
         }
 
-        public Param2 Add(double[,] vals)
+        public Param2 Data(double[,] vals)
         {
             if (vals.GetLength(0) != _index1.Count)
                 throw new IndexOutOfRangeException();

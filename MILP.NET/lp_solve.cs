@@ -177,6 +177,23 @@ namespace MILP.NET
             }
         }
 
+        public void GetValues(Var2 variables, Action<string, string, double> iterator)
+        {
+            var values = new double[_model.NumberOfVariables];
+            get_variables(_lp, values);
+
+            int index = 0;
+            foreach (var i in variables._index1._elements)
+            {
+                foreach (var j in variables._index2._elements)
+                {
+                    var value = values[variables._startIndex + index];
+                    iterator(i, j, value);
+                    ++index;
+                }
+            }
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

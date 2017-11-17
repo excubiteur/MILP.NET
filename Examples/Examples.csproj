@@ -53,6 +53,7 @@
     <Compile Include="Steel.cs" />
     <Compile Include="Steel3.cs" />
     <Compile Include="Steel4.cs" />
+    <Compile Include="Transp.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -66,6 +66,23 @@ namespace MILP.NET
             }
         }
 
+        static Constraint Equal(Expression e, double value)
+        {
+            switch (e)
+            {
+                case Sum sum:
+                    {
+                        var constraint = new Constraint();
+                        constraint._expression = sum;
+                        constraint._lowerBound = value;
+                        constraint._upperBound = value;
+                        return constraint;
+                    }
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public static Constraint operator <=(double value, Expression e)
         {
             return GreaterEqual(e, value);
@@ -86,6 +103,25 @@ namespace MILP.NET
             return LessEqual(e, value);
         }
 
+        public static Constraint operator ==(Expression e, double value)
+        {
+            return Equal(e, value);
+        }
+
+        public static Constraint operator ==(double value, Expression e)
+        {
+            return Equal(e, value);
+        }
+
+        public static Constraint operator !=(Expression e, double value)
+        {
+            throw new NotSupportedException();
+        }
+
+        public static Constraint operator !=(double value, Expression e)
+        {
+            throw new NotSupportedException();
+        }
     }
 
     internal class Term : Expression

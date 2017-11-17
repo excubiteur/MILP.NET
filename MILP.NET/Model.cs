@@ -77,12 +77,32 @@ namespace MILP.NET
             return result;
         }
 
+        public Var2 CreateVar(Set index1, Set index2)
+        {
+            var result = new Var2(index1, index2);
+            _vars.Add(result);
+            return result;
+        }
+
         public static Expression Sum(Set index, Func<Index,Expression> sum)
         {
             var result = new Sum();
             for(int i = 0; i < index.Count; ++i)
             {
                 result.Add(sum(new Index(i)));
+            }
+            return result;
+        }
+
+        public static Expression Sum(Set index1, Set index2, Func<Index, Index,  Expression> sum)
+        {
+            var result = new Sum();
+            for (int i = 0; i < index1.Count; ++i)
+            {
+                for (int j = 0; j < index2.Count; ++j)
+                {
+                    result.Add(sum(new Index(i), new Index(j)));
+                }
             }
             return result;
         }
