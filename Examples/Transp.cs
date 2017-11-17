@@ -33,13 +33,13 @@ namespace Examples
 
             m.SealData();
 
-            m.Minimize(Sum(ORIG,DEST, (i,j) => cost[i,j]*Trans[i,j]));
+            m.Minimize("Total_Cost", Sum(ORIG,DEST, (i,j) => cost[i,j]*Trans[i,j]));
 
-            m.SubjectTo(ORIG, (i) =>
+            m.SubjectTo("Supply", ORIG, (i) =>
                 Sum(DEST, (j) => Trans[i,j]) == supply[i]
             );
 
-            m.SubjectTo(DEST, (j) =>
+            m.SubjectTo("Demand", DEST, (j) =>
                 Sum(ORIG, (i) => Trans[i, j]) == demand[j]
             );
 

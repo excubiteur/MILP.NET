@@ -98,11 +98,11 @@ namespace Examples
                 m.SealData();
             }
 
-            m.Maximize(
+            m.Maximize("Total_Profit",
                 Sum(PROD, (p) =>
                     profit[p] * Make[p]));
 
-            m.SubjectTo(STAGE, (s) =>
+            m.SubjectTo("Time",STAGE, (s) =>
                 Sum(PROD, (p) => (1 / rate[p,s]) * Make[p]) <= avail[s]
                 );
 

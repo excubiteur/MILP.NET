@@ -44,9 +44,9 @@ namespace Examples
 
             m.SealData();
 
-            m.Minimize(Sum(FOOD, (j) => cost[j] * Buy[j]));
+            m.Minimize("Total_Cost", Sum(FOOD, (j) => cost[j] * Buy[j]));
 
-            m.SubjectTo(NUTR, (i) => 
+            m.SubjectTo("Diet", NUTR, (i) => 
                         n_min[i] <= Sum(FOOD, (j) => amt[i,j]*Buy[j]) <= n_max[i]
             );
 

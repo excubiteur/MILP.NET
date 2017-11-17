@@ -71,11 +71,11 @@ namespace Examples
                 m.SealData();
             }
 
-            m.Maximize(
+            m.Maximize("Total_Profit",
                 Sum(PROD, (p) => 
                     profit[p]*Make[p]));
 
-            m.SubjectTo(
+            m.SubjectTo("Time",
                 Sum(PROD, (p)=>(1 / rate[p])*Make[p])  <=  avail);
 
             using (var solver = new glpk(m))

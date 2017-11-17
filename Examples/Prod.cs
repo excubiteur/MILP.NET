@@ -66,15 +66,15 @@ namespace Examples
             }
 
 
-            m.Maximize(
+            m.Maximize("Total_Profit",
                 Sum(P, (j) => c[j] * X[j])
                 );
 
-            m.SubjectTo(
+            m.SubjectTo("Time",
                 Sum(P, (j) => 1 / a[j] * X[j]) <= b
                 );
 
-            m.SubjectTo(P,
+            m.SubjectTo("Limit", P, 
                 (j) => 0 <= X[j] <= u[j]
                 );
 

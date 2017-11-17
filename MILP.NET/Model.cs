@@ -107,24 +107,24 @@ namespace MILP.NET
             return result;
         }
 
-        public void Maximize(Expression e)
+        public void Maximize(string name, Expression e)
         {
             _maximize = true;
             _objective = e;
         }
 
-        public void Minimize(Expression e)
+        public void Minimize(string name, Expression e)
         {
             _maximize = false;
             _objective = e;
         }
 
-        public void SubjectTo(Constraint c)
+        public void SubjectTo(string name, Constraint c)
         {
             _constraints.Add(c);
         }
 
-        public void SubjectTo(Set index, Func<Index, Constraint> constraint)
+        public void SubjectTo(string name, Set index, Func<Index, Constraint> constraint)
         {
             int size = index.Count;
             for (int i = 0; i < size; ++i)
