@@ -38,6 +38,13 @@ namespace MILP.NET
                         constraint._lowerBound = value;
                         return constraint;
                     }
+                case Sum s:
+                    {
+                        var constraint = new Constraint();
+                        constraint._expression = s;
+                        constraint._lowerBound = value;
+                        return constraint;
+                    }
                 default:
                     throw new NotImplementedException();
             }

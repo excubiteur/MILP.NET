@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 namespace MILP.NET
@@ -28,6 +29,17 @@ namespace MILP.NET
             _values.Insert(_index.IndexOf(name), value);
 
         }
+
+        public Param1 Add(IList<double> vals)
+        {
+            if (vals.Count != _index.Count)
+                throw new IndexOutOfRangeException();
+            if (_values.Count <= 0)
+                _values.Capacity = _index.Count;
+            _values.AddRange(vals);
+            return this;
+        }
+
     }
 
     public class Param2 : Param
@@ -56,6 +68,22 @@ namespace MILP.NET
                 _values.Capacity = _index1.Count * _index2.Count;
             _values.Insert(_index1.IndexOf(name1) * _index2.Count + _index2.IndexOf(name2), value);
 
+        }
+
+        public Param2 Add(double[,] vals)
+        {
+            if (vals.GetLength(0) != _index1.Count)
+                throw new IndexOutOfRangeException();
+            if (vals.GetLength(1) != _index2.Count)
+                throw new IndexOutOfRangeException();
+
+            if (_values.Count <= 0)
+                _values.Capacity = _index1.Count * _index2.Count;
+
+            foreach (var v in vals)
+                _values.Add(v);
+
+            return this;
         }
     }
 }

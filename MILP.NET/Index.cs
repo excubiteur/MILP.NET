@@ -31,6 +31,14 @@ namespace MILP.NET
             _elements.Add(element);
         }
 
+        public Set Add(IEnumerable<string> elements)
+        {
+            foreach(var e in elements)
+            {
+                Add(e);
+            }
+            return this;
+        }
     }
 
 

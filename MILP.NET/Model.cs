@@ -93,6 +93,12 @@ namespace MILP.NET
             _objective = e;
         }
 
+        public void Minimize(Expression e)
+        {
+            _maximize = false;
+            _objective = e;
+        }
+
         public void SubjectTo(Constraint c)
         {
             _constraints.Add(c);
