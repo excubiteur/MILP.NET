@@ -217,6 +217,23 @@ namespace MILP.NET
             }
         }
 
+        public void GetValues(Var3 variables, Action<string, string, string,  double> iterator)
+        {
+            int index = 0;
+            foreach (var i in variables._index1._elements)
+            {
+                foreach (var j in variables._index2._elements)
+                {
+                    foreach (var k in variables._index3._elements)
+                    {
+                        var value = glp_get_col_prim(_lp, variables._startIndex + index + 1);
+                        iterator(i, j, k, value);
+                        ++index;
+                    }
+                }
+            }
+        }
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 

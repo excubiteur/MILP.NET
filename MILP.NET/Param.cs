@@ -6,6 +6,8 @@ namespace MILP.NET
 {
     public class Param
     {
+        protected double _default;
+        public void SetDefault(double d) { _default = d; }
     }
 
     public class Param1 : Param
@@ -18,6 +20,8 @@ namespace MILP.NET
         {
             get
             {
+                if (_values.Count <= 0)
+                    return _default;
                 return _values[index._rawIndex];
             }
         }
@@ -58,6 +62,8 @@ namespace MILP.NET
         {
             get
             {
+                if (_values.Count <= 0)
+                    return _default;
                 return _values[index1._rawIndex*_index2.Count + index2._rawIndex];
             }
         }
@@ -106,6 +112,8 @@ namespace MILP.NET
         {
             get
             {
+                if (_values.Count <= 0)
+                    return _default;
                 return _values[index1._rawIndex * _index2.Count * _index3.Count 
                     + index2._rawIndex * _index3.Count 
                     + index3._rawIndex];

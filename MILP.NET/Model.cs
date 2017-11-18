@@ -65,6 +65,13 @@ namespace MILP.NET
             return result;
         }
 
+        public Param3 CreateParam(Set index1, Set index2, Set index3)
+
+        {
+            var result = new Param3(index1, index2, index3);
+            _params.Add(result);
+            return result;
+        }
         public Var1 CreateVar(Set index)
         {
             var result = new Var1(index);
@@ -75,6 +82,13 @@ namespace MILP.NET
         public Var2 CreateVar(Set index1, Set index2)
         {
             var result = new Var2(index1, index2);
+            _vars.Add(result);
+            return result;
+        }
+
+        public Var3 CreateVar(Set index1, Set index2, Set index3)
+        {
+            var result = new Var3(index1, index2, index3);
             _vars.Add(result);
             return result;
         }
@@ -97,6 +111,22 @@ namespace MILP.NET
                 for (int j = 0; j < index2.Count; ++j)
                 {
                     result.Add(sum(new Index(i), new Index(j)));
+                }
+            }
+            return result;
+        }
+
+        public static Expression Sum(Set index1, Set index2, Set index3, Func<Index, Index, Index, Expression> sum)
+        {
+            var result = new Sum();
+            for (int i = 0; i < index1.Count; ++i)
+            {
+                for (int j = 0; j < index2.Count; ++j)
+                {
+                    for (int k = 0; k < index3.Count; ++k)
+                    {
+                        result.Add(sum(new Index(i), new Index(j), new Index(k)));
+                    }
                 }
             }
             return result;
@@ -128,6 +158,19 @@ namespace MILP.NET
                 _constraints.Add(c);
             }
         }
+
+        public void SubjectTo(string name, Set index1, Set index2, Func<Index, Index, Constraint> constraint)
+        {
+            for (int i = 0; i < index1.Count; ++i)
+            {
+                for (int j = 0; j < index2.Count; ++j)
+                {
+                    var c = constraint(new Index(i), new Index(j));
+                    _constraints.Add(c);
+                }
+            }
+        }
+
 
     }
 }

@@ -119,7 +119,7 @@ namespace MILP.NET
 
     }
 
-    /*
+    
     public class Var3 : Var
     {
         internal Func<Index, Index, Index, double> _lowerBound = null;
@@ -178,33 +178,31 @@ namespace MILP.NET
         {
             if (_lowerBound == null)
                 return null;
-            var pos = absoluteIndex - _startIndex;
-            var i = pos / (_index2.Count * _index3.Count);
-            var j = i * (_index2.Count * _index3.Count) + pos / _index3.Count;
+            var offset = absoluteIndex - _startIndex;
+            var i = offset / (_index2.Count * _index3.Count);
+            var j = (offset / _index3.Count) % _index2.Count;
+            var k = offset % (_index2.Count * _index3.Count);
             return _lowerBound(
-                new Index(
-                    (absoluteIndex - _startIndex) / (_index2.Count * _index3.Count)
-                    ),
-                new Index(
-                    (
-                    (absoluteIndex - _startIndex) % (_index2.Count * _index3.Count)) / _index3.Count
-                    ),
-                new Index(
-                    (absoluteIndex - _startIndex) % (_index2.Count * _index3.Count)
-                )
-                );
+                new Index(i),
+                new Index(j),
+                new Index(k));
         }
 
-        
+
         internal override double? GetUpperBound(int absoluteIndex)
         {
             if (_upperBound == null)
                 return null;
+            var offset = absoluteIndex - _startIndex;
+            var i = offset / (_index2.Count * _index3.Count);
+            var j = (offset / _index3.Count) % _index2.Count;
+            var k = offset % (_index2.Count * _index3.Count);
             return _upperBound(
-                new Index((absoluteIndex - _startIndex) / _index2.Count),
-                new Index((absoluteIndex - _startIndex) % _index2.Count));
+                new Index(i),
+                new Index(j),
+                new Index(k));
         }
         
 
-    }*/
+    }
 }

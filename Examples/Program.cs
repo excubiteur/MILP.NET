@@ -11,6 +11,7 @@ namespace Examples
             Steel4.Run();
             Diet.Run();
             Transp.Run();
+            Multi.Run();
         }
     }
 }
