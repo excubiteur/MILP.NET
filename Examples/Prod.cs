@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using MILP.NET;
 using static MILP.NET.Model;
+
 
 // AMPL model to translate
 // From the book: "AMPL: A Modeling Language for Mathematical Programming" 
@@ -47,20 +49,17 @@ namespace Examples
 
             var X = m.CreateVar(P);
 
-
             {
                 foreach (var p in P_data)
                 {
                     P.Add(p);
                 }
 
-                int data_index = 0;
-                foreach (var p in P_data)
+                foreach (var (p, data_index) in P_data.Select((s, i) => ( s, i )))
                 {
                     a.Add(p, a_data[data_index]);
                     c.Add(p, c_data[data_index]);
                     u.Add(p, u_data[data_index]);
-                    ++data_index;
                 }
                 m.SealData();
             }

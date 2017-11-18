@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using MILP.NET;
 using static MILP.NET.Model;
@@ -75,24 +76,20 @@ namespace Examples
                     STAGE.Add(s);
                 }
 
-                int data_index = 0;
-                foreach (var p in PROD_data)
+                foreach (var (p, data_index)  in PROD_data.Select((p,i) => (p,i)))
                 {
-                    int data_index2 = 0;
-                    foreach (var s in STAGE_data)
+                    foreach (var (s, data_index2) in STAGE_data.Select((s,i) => (s,i)))
                     {
-                        rate.Add(p, s, rate_data[data_index][data_index2++]);
+                        rate.Add(p, s, rate_data[data_index][data_index2]);
                     }
                     profit.Add(p, profit_data[data_index]);
                     market.Add(p, market_data[data_index]);
                     commit.Add(p, commit_data[data_index]);
-                    ++data_index;
                 }
 
-                data_index = 0;
-                foreach (var s in STAGE_data)
+                foreach (var (s, data_index) in STAGE_data.Select( (s,i) => (s,i)))
                 {
-                    avail.Add(s, avail_data[data_index++]);
+                    avail.Add(s, avail_data[data_index]);
                 }
 
                 m.SealData();
