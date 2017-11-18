@@ -118,4 +118,93 @@ namespace MILP.NET
 
 
     }
+
+    /*
+    public class Var3 : Var
+    {
+        internal Func<Index, Index, Index, double> _lowerBound = null;
+        internal Func<Index, Index, Index, double> _upperBound = null;
+
+        internal Set _index1;
+        internal Set _index2;
+        internal Set _index3;
+
+        internal Var3(Set index1, Set index2, Set index3)
+        {
+            _index1 = index1;
+            _index2 = index2;
+            _index3 = index3;
+        }
+
+        internal override int Count
+        {
+            get
+            {
+                return _index1.Count * _index2.Count * _index3.Count;
+            }
+        }
+
+        public Expression this[Index index1, Index index2, Index index3]
+        {
+            get
+            {
+                return new Variable(
+                    _startIndex + 
+                    index1._rawIndex * _index2.Count * _index3.Count + 
+                    index2._rawIndex * _index3.Count +
+                    index3._rawIndex);
+            }
+        }
+
+        public Var3 LowerBound(double value)
+        {
+            _lowerBound = (i, j, k) => value;
+            return this;
+        }
+
+        public Var3 LowerBound(Func<Index, Index, Index, double> expression)
+        {
+            _lowerBound = expression;
+            return this;
+        }
+
+        public Var3 UpperBound(Func<Index, Index, Index, double> expression)
+        {
+            _upperBound = expression;
+            return this;
+        }
+
+        internal override double? GetLowerBound(int absoluteIndex)
+        {
+            if (_lowerBound == null)
+                return null;
+            var pos = absoluteIndex - _startIndex;
+            var i = pos / (_index2.Count * _index3.Count);
+            var j = i * (_index2.Count * _index3.Count) + pos / _index3.Count;
+            return _lowerBound(
+                new Index(
+                    (absoluteIndex - _startIndex) / (_index2.Count * _index3.Count)
+                    ),
+                new Index(
+                    (
+                    (absoluteIndex - _startIndex) % (_index2.Count * _index3.Count)) / _index3.Count
+                    ),
+                new Index(
+                    (absoluteIndex - _startIndex) % (_index2.Count * _index3.Count)
+                )
+                );
+        }
+
+        
+        internal override double? GetUpperBound(int absoluteIndex)
+        {
+            if (_upperBound == null)
+                return null;
+            return _upperBound(
+                new Index((absoluteIndex - _startIndex) / _index2.Count),
+                new Index((absoluteIndex - _startIndex) % _index2.Count));
+        }
+        
+
+    }*/
 }

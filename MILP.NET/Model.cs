@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MILP.NET
 {
@@ -40,13 +41,7 @@ namespace MILP.NET
 
         public void SealData()
         {
-            int cumulativeSize = 0;
-            foreach(var v in _vars)
-            {
-                v._startIndex = cumulativeSize;
-                cumulativeSize += v.Count;
-            }
-            NumberOfVariables = cumulativeSize;
+            NumberOfVariables = _vars.Sum((v) => v.Count);
         }
 
         public Set CreateSet()
