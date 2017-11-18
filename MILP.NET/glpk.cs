@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace MILP.NET
 {
@@ -120,11 +121,8 @@ namespace MILP.NET
 
             glp_add_rows(_lp, _model._constraints.Count);
 
-            int currentRow = 0;
-            foreach(var c in _model._constraints)
+            foreach(var (c, currentRow) in _model._constraints.Select( (item, count) => (item, count + 1) ))
             {
-                ++currentRow;
-
                 double lower = 0;
                 double upper = 0;
 
@@ -158,10 +156,8 @@ namespace MILP.NET
                 var indices = new int [c._expression._terms.Count + 1];
                 var values = new double[c._expression._terms.Count + 1];
 
-                int count = 0;
-                foreach (var t in c._expression._terms)
+                foreach (var (t, count) in c._expression._terms.Select( (item, i) => (item, i + 1)))
                 {
-                    ++count;
                     indices[count] = t.Key + 1;
                     values[count] = t.Value._coefficient;
                 }

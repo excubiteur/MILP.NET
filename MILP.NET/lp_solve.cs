@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Linq;
 
 namespace MILP.NET
 {
@@ -102,12 +103,10 @@ namespace MILP.NET
                 var indices = new int[c._expression._terms.Count];
                 var values = new double[c._expression._terms.Count];
 
-                int count = 0;
-                foreach (var t in c._expression._terms)
+                foreach (var (t, count) in c._expression._terms.Select( (t, i) => (t,i)))
                 {
                     indices[count] = t.Key + 1;
                     values[count] = t.Value._coefficient;
-                    ++count;
                 }
 
                 if (c._lowerBound.HasValue)
