@@ -130,12 +130,10 @@ namespace MILP.NET
                         var indices = new int[s._terms.Count];
                         var values = new double[s._terms.Count];
 
-                        int count = 0;
-                        foreach (var t in s._terms)
+                        foreach (var (t, count) in s._terms.Select((t,i) => (t,i)))
                         {
                             indices[count] = t.Key + 1;
                             values[count] = t.Value._coefficient;
-                            ++count;
                         }
                         set_obj_fnex(_lp, s._terms.Count, values, indices);
                     }
