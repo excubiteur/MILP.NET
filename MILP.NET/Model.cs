@@ -106,12 +106,15 @@ namespace MILP.NET
         public static Expression Sum(Set index1, Set index2, Func<Index, Index,  Expression> sum)
         {
             var result = new Sum();
-            for (int i = 0; i < index1.Count; ++i)
+
+            var indices = from i in index1._elements.Select((_s, _i) => _i)
+                          from j in index2._elements.Select((_s, _i) => _i)
+                          select (i, j);
+
+
+            foreach (var (i, j) in indices)
             {
-                for (int j = 0; j < index2.Count; ++j)
-                {
-                    result.Add(sum(new Index(i), new Index(j)));
-                }
+                result.Add(sum(new Index(i), new Index(j)));
             }
             return result;
         }
@@ -119,15 +122,15 @@ namespace MILP.NET
         public static Expression Sum(Set index1, Set index2, Set index3, Func<Index, Index, Index, Expression> sum)
         {
             var result = new Sum();
-            for (int i = 0; i < index1.Count; ++i)
+
+            var indices = from i in index1._elements.Select((_s, _i) => _i)
+                          from j in index2._elements.Select((_s, _i) => _i)
+                          from k in index3._elements.Select((_s, _i) => _i)
+                          select (i, j, k);
+
+            foreach (var (i, j, k) in indices)
             {
-                for (int j = 0; j < index2.Count; ++j)
-                {
-                    for (int k = 0; k < index3.Count; ++k)
-                    {
-                        result.Add(sum(new Index(i), new Index(j), new Index(k)));
-                    }
-                }
+                result.Add(sum(new Index(i), new Index(j), new Index(k)));
             }
             return result;
         }
@@ -151,8 +154,10 @@ namespace MILP.NET
 
         public void SubjectTo(string name, Set index, Func<Index, Constraint> constraint)
         {
-            int size = index.Count;
-            for (int i = 0; i < size; ++i)
+            var indices = from i in index._elements.Select((_s, _i) => _i)
+                          select i;
+
+            foreach (var i in indices)
             {
                 var c = constraint(new Index(i));
                 _constraints.Add(c);
@@ -161,14 +166,16 @@ namespace MILP.NET
 
         public void SubjectTo(string name, Set index1, Set index2, Func<Index, Index, Constraint> constraint)
         {
-            for (int i = 0; i < index1.Count; ++i)
+            var indices = from i in index1._elements.Select( (_s, _i) => _i)
+                          from j in index2._elements.Select(( _s, _i) => _i)
+                          select (i, j );
+
+            foreach( var (i, j) in indices)
             {
-                for (int j = 0; j < index2.Count; ++j)
-                {
-                    var c = constraint(new Index(i), new Index(j));
-                    _constraints.Add(c);
-                }
+                var c = constraint(new Index(i), new Index(j));
+                _constraints.Add(c);
             }
+        
         }
 
 
