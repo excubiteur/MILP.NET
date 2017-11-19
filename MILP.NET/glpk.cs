@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MILP.NET
 {
-    public class glpk: Solver, IDisposable
+    public class glpk: Solver
     {
         const string glpklibname = "glpk_4_63.dll";
 
@@ -87,6 +87,11 @@ namespace MILP.NET
             _model = m;
         }
 
+        protected override void ReleaseUnmanaged()
+        {
+            if (_lp != IntPtr.Zero)
+                glp_delete_prob(_lp);
+        }
 
         public void solve()
         {
@@ -198,33 +203,5 @@ namespace MILP.NET
         {
             return glp_get_col_prim(_lp, index + 1);
         }
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (_lp != IntPtr.Zero)
-                    glp_delete_prob(_lp);
-
-                disposedValue = true;
-            }
-        }
-
-       ~glpk()
-        {
-           Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
-
-
     }
 }

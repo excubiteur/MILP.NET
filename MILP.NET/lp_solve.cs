@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MILP.NET
 {
-    public class lp_solve: Solver, IDisposable
+    public class lp_solve: Solver
     {
         const string lp_solve_libname = "lpsolve55.dll";
 
@@ -67,6 +67,12 @@ namespace MILP.NET
         public lp_solve(Model m)
         {
             _model = m;
+        }
+
+        protected override void ReleaseUnmanaged()
+        {
+            if (_lp != IntPtr.Zero)
+                delete_lp(_lp);
         }
 
         public void solve()
@@ -172,32 +178,5 @@ namespace MILP.NET
         {
             return _values[index];
         }
-
-
-
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                disposedValue = true;
-                if (_lp != IntPtr.Zero)
-                    delete_lp(_lp);
-            }
-        }
-
-        ~lp_solve()
-        {
-           Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion
     }
 }

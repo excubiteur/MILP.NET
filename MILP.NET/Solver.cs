@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace MILP.NET
 {
-    public abstract class Solver
+    public abstract class Solver: IDisposable
     {
         protected abstract void GetValues();
         protected abstract double GetValue(int index);
+        protected abstract void ReleaseUnmanaged();
 
         public void GetValues(Var1 variables, Action<string, double> iterator)
         {
@@ -60,5 +61,29 @@ namespace MILP.NET
                 ++index;
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                disposedValue = true;
+                ReleaseUnmanaged();
+            }
+        }
+
+        ~Solver()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
