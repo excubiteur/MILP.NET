@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MILP.NET
 {
-    public class lp_solve: IDisposable
+    public class lp_solve: Solver, IDisposable
     {
         const string lp_solve_libname = "lpsolve55.dll";
 
@@ -160,56 +160,20 @@ namespace MILP.NET
             }
         }
 
-        public void GetValues(Var1 variables, Action<string, double> iterator)
-        {
-            var values = new double[_model.NumberOfVariables];
-            get_variables(_lp, values);
+        double[] _values;
 
-            int index = 0;
-            foreach (var i in variables._index._elements)
-            {
-                var value = values[ variables._startIndex + index];
-                iterator(i, value);
-                ++index;
-            }
+        protected override void GetValues()
+        {
+            _values = new double[_model.NumberOfVariables];
+            get_variables(_lp, _values);
         }
 
-        public void GetValues(Var2 variables, Action<string, string, double> iterator)
+        protected override double GetValue(int index)
         {
-            var values = new double[_model.NumberOfVariables];
-            get_variables(_lp, values);
-
-            int index = 0;
-            foreach (var i in variables._index1._elements)
-            {
-                foreach (var j in variables._index2._elements)
-                {
-                    var value = values[variables._startIndex + index];
-                    iterator(i, j, value);
-                    ++index;
-                }
-            }
+            return _values[index];
         }
 
-        public void GetValues(Var3 variables, Action<string, string, string, double> iterator)
-        {
-            var values = new double[_model.NumberOfVariables];
-            get_variables(_lp, values);
 
-            int index = 0;
-            foreach (var i in variables._index1._elements)
-            {
-                foreach (var j in variables._index2._elements)
-                {
-                    foreach (var k in variables._index3._elements)
-                    {
-                        var value = values[variables._startIndex + index];
-                        iterator(i, j, k, value);
-                        ++index;
-                    }
-                }
-            }
-        }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

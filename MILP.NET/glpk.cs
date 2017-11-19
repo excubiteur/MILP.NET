@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MILP.NET
 {
-    public class glpk: IDisposable
+    public class glpk: Solver, IDisposable
     {
         const string glpklibname = "glpk_4_63.dll";
 
@@ -192,46 +192,11 @@ namespace MILP.NET
 
         public double ObjectiveValue {  get { return glp_get_obj_val(_lp); } }
 
-        public void GetValues(Var1 variables, Action<string, double> iterator)
-        {
-            int index = 0;
-            foreach(var i in variables._index._elements)
-            {
-                var value = glp_get_col_prim(_lp, variables._startIndex + index + 1);
-                iterator(i, value);
-                ++index;
-            }
-        }
+        protected override void GetValues()   {  }
 
-        public void GetValues(Var2 variables, Action<string, string, double> iterator)
+        protected override double GetValue(int index)
         {
-            int index = 0;
-            foreach (var i in variables._index1._elements)
-            {
-                foreach (var j in variables._index2._elements)
-                {
-                    var value = glp_get_col_prim(_lp, variables._startIndex + index + 1);
-                    iterator(i, j, value);
-                    ++index;
-                }
-            }
-        }
-
-        public void GetValues(Var3 variables, Action<string, string, string,  double> iterator)
-        {
-            int index = 0;
-            foreach (var i in variables._index1._elements)
-            {
-                foreach (var j in variables._index2._elements)
-                {
-                    foreach (var k in variables._index3._elements)
-                    {
-                        var value = glp_get_col_prim(_lp, variables._startIndex + index + 1);
-                        iterator(i, j, k, value);
-                        ++index;
-                    }
-                }
-            }
+            return glp_get_col_prim(_lp, index + 1);
         }
 
         #region IDisposable Support
